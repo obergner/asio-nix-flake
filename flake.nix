@@ -7,39 +7,41 @@
   };
 
   outputs = { 
-	self, 
-	nixpkgs, 
-	flake-utils,
+	  self, 
+	  nixpkgs, 
+	  flake-utils,
   }: flake-utils.lib.eachDefaultSystem
-	(system:
+	     (system:
            let
-        	pkgs = import nixpkgs { inherit system; };
-        	version = "1.10.8";
-        	sha256 = "0jgdl4fxw0hwy768rl3lhdc0czz7ak7czf3dg10j21pdpfpfvpi6";
-		packageName = "asio-library";
+          	pkgs = import nixpkgs { inherit system; };
+          	version = "1.10.8";
+          	sha256 = "0jgdl4fxw0hwy768rl3lhdc0czz7ak7czf3dg10j21pdpfpfvpi6";
+      	  	packageName = "asio-library";
            in {
-                  packages.${packageName} = 
+             packages.${packageName} = 
         	    pkgs.stdenv.mkDerivation {
         	      pname = "asio";
-                      inherit version;
+                inherit version;
                 
-                      src = pkgs.fetchurl {
-                        url = "mirror://sourceforge/asio/asio-${version}.tar.bz2";
-                        inherit sha256;
-                      };
+                src = pkgs.fetchurl {
+                  url = "mirror://sourceforge/asio/asio-${version}.tar.bz2";
+                  inherit sha256;
+                };
       
-      	              propagatedBuildInputs = [ pkgs.boost ];
-                      buildInputs = [ pkgs.openssl ];
+                buildInputs = [ 
+                  pkgs.openssl 
+                  pkgs.boost
+                ];
       
         	      meta = with pkgs.lib; {
-                        homepage = "http://asio.sourceforge.net/";
-                        description = "Cross-platform C++ library for network and low-level I/O programming";
-                        license = licenses.boost;
-                        platforms = platforms.unix;
-                     };
-        	  };
+                  homepage = "http://asio.sourceforge.net/";
+                  description = "Cross-platform C++ library for network and low-level I/O programming";
+                  license = licenses.boost;
+                  platforms = platforms.unix;
+                };
+          	  };
 
-                defaultPackage = self.packages.${system}.${packageName};
-           }
-     );
+            defaultPackage = self.packages.${system}.${packageName};
+        }
+    );
 }
