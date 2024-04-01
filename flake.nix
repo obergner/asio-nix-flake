@@ -28,10 +28,8 @@
                   inherit sha256;
                 };
       
-                buildInputs = [ 
-                  pkgs.openssl 
-                  pkgs.boost
-                ];
+                buildInputs = [ pkgs.openssl ];
+                propagatedBuildInputs = [ pkgs.boost ];
       
         	      meta = with pkgs.lib; {
                   homepage = "http://asio.sourceforge.net/";
